@@ -60,8 +60,8 @@ jobs:
               "type": "object",
               "properties": {
                 "title": { "type": "string", "description": "Conventional commit title" },
-                "branch_name": { "type": "string", "description": "Branch name in the format type/short-description (e.g. feat/added-specification)" }
-                "body": { "type": "string", "description": "Detailed description of changes in markdown" },
+                "branch_name": { "type": "string", "description": "Branch name in the format type/short-description (e.g. feat/added-specification)" },
+                "body": { "type": "string", "description": "Detailed description of changes in markdown" }
               },
               "required": ["title", "branch_name", "body"],
               "additionalProperties": false
