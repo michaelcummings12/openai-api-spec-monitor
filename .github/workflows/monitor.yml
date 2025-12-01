@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: '0 * * * *' # Run every hour
   workflow_dispatch: # Allow manual trigger
+  push:
+    branches:
+      - main
+  pull_request:
 
 permissions:
   contents: write
@@ -12,7 +16,7 @@ permissions:
 
 jobs:
   monitor:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -21,10 +25,16 @@ jobs:
         run: |
           curl -o cache/openapi.documented.yml https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml
 
-      - name: Compute the diff and check for changes
+      - name: Compute the diff
         id: check_changes
         run: |
-          git diff --exit-code cache/openapi.documented.yml || echo "changes_detected=true" >> $GITHUB_OUTPUT
+          git diff --stat cache/openapi.documented.yml
+          if ! git diff --exit-code cache/openapi.documented.yml; then
+            echo "Changes detected!"
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          else
+            echo "No changes detected."
+          fi
 
       - name: Read the diff
         if: steps.check_changes.outputs.changes_detected == 'true'
@@ -49,35 +59,42 @@ jobs:
               "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
-                "title": { "type": "string", "description": "Conventional commit title" },
+                "branch_name": { "type": "string", "description": "Branch name in the format type/short-description (e.g. feat/added-specification)" },
                 "body": { "type": "string", "description": "Detailed description of changes in markdown" }
               },
-              "required": ["title", "body"],
+              "required": ["branch_name", "body"],
               "additionalProperties": false
             }
           prompt: |
             You are a senior software engineer and an expert in API specifications.
             Analyze the following git diff for an OpenAI API spec file.
-            Determine the type of change (feat, fix, chore, docs, breaking) and provide a concise summary.
-            Also provide a detailed description of the changes.
-            
+            Determine the type of change (feat, fix, chore, docs, breaking).
+            Generate a branch name in the format `type/short-description` (e.g., `feat/new-embeddings-model`).
+            And generate a detailed description of the changes in markdown for a GitHub pull request.
+              
             Diff:
             ${{ steps.read_diff.outputs.diff }}
 
-      - name: Create Pull Request
+      - name: Debug analysis result
+        if: steps.check_changes.outputs.changes_detected == 'true'
+        run: |
+          echo "Branch: ${{ fromJson(steps.analyze.outputs.json).branch_name }}"
+          echo "Body: ${{ fromJson(steps.analyze.outputs.json).body }}"
+
+      - name: Create PR
         if: steps.check_changes.outputs.changes_detected == 'true'
         uses: peter-evans/create-pull-request@v7
         id: cpr
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: ${{ fromJson(steps.analyze.outputs.json).title }}
-          title: ${{ fromJson(steps.analyze.outputs.json).title }}
+          commit-message: ${{ fromJson(steps.analyze.outputs.json).branch_name }}
+          title: ${{ fromJson(steps.analyze.outputs.json).branch_name }}
           body: ${{ fromJson(steps.analyze.outputs.json).body }}
-          branch: update-spec
+          branch: ${{ fromJson(steps.analyze.outputs.json).branch_name }}
           delete-branch: true
           base: main
 
-      - name: Enable Auto-Merge
+      - name: Enable auto-merge
         if: steps.cpr.outputs.pull-request-operation == 'created'
         run: gh pr merge --squash --auto "${{ steps.cpr.outputs.pull-request-number }}"
         env:
