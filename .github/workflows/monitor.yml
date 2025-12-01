@@ -1,0 +1,84 @@
+name: OpenAI API Spec Monitor
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Run every hour
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Fetch latest spec
+        run: |
+          curl -o cache/openapi.documented.yml https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml
+
+      - name: Compute the diff and check for changes
+        id: check_changes
+        run: |
+          git diff --exit-code cache/openapi.documented.yml || echo "changes_detected=true" >> $GITHUB_OUTPUT
+
+      - name: Read the diff
+        if: steps.check_changes.outputs.changes_detected == 'true'
+        id: read_diff
+        run: |
+          # Read the diff into a variable. Limit to 10000 chars.
+          DIFF_CONTENT=$(git diff cache/openapi.documented.yml | head -c 10000)
+          
+          echo "diff<<EOF" >> $GITHUB_OUTPUT
+          echo "$DIFF_CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Analyze the diff
+        if: steps.check_changes.outputs.changes_detected == 'true'
+        uses: vercel/ai-action@v2
+        id: analyze
+        with:
+          model: "openai/gpt-4o-mini"
+          api-key: ${{ secrets.OPENAI_API_KEY }}
+          schema: |
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties": {
+                "title": { "type": "string", "description": "Conventional commit title" },
+                "body": { "type": "string", "description": "Detailed description of changes in markdown" }
+              },
+              "required": ["title", "body"],
+              "additionalProperties": false
+            }
+          prompt: |
+            You are a senior software engineer and an expert in API specifications.
+            Analyze the following git diff for an OpenAI API spec file.
+            Determine the type of change (feat, fix, chore, docs, breaking) and provide a concise summary.
+            Also provide a detailed description of the changes.
+            
+            Diff:
+            ${{ steps.read_diff.outputs.diff }}
+
+      - name: Create Pull Request
+        if: steps.check_changes.outputs.changes_detected == 'true'
+        uses: peter-evans/create-pull-request@v7
+        id: cpr
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: ${{ fromJson(steps.analyze.outputs.json).title }}
+          title: ${{ fromJson(steps.analyze.outputs.json).title }}
+          body: ${{ fromJson(steps.analyze.outputs.json).body }}
+          branch: update-spec
+          delete-branch: true
+          base: main
+
+      - name: Enable Auto-Merge
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        run: gh pr merge --squash --auto "${{ steps.cpr.outputs.pull-request-number }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
