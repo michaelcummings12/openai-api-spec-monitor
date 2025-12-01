@@ -25,7 +25,7 @@ jobs:
         run: |
           curl -o cache/openapi.documented.yml https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml
 
-      - name: Compute the diff and check for changes
+      - name: Compute the diff
         id: check_changes
         run: |
           git diff --stat cache/openapi.documented.yml
@@ -60,16 +60,18 @@ jobs:
               "type": "object",
               "properties": {
                 "title": { "type": "string", "description": "Conventional commit title" },
-                "body": { "type": "string", "description": "Detailed description of changes in markdown" }
+                "branch_name": { "type": "string", "description": "Branch name in the format type/short-description (e.g. feat/added-specification)" }
+                "body": { "type": "string", "description": "Detailed description of changes in markdown" },
               },
-              "required": ["title", "body"],
+              "required": ["title", "branch_name", "body"],
               "additionalProperties": false
             }
           prompt: |
             You are a senior software engineer and an expert in API specifications.
             Analyze the following git diff for an OpenAI API spec file.
             Determine the type of change (feat, fix, chore, docs, breaking) and provide a concise summary.
-            Also provide a detailed description of the changes.
+            Generate a branch name in the format `type/short-description` (e.g., `feat/new-embeddings-model`).
+            Finally, provide a detailed description of the changes.
             
             Diff:
             ${{ steps.read_diff.outputs.diff }}
@@ -77,8 +79,9 @@ jobs:
       - name: Debug analysis result
         if: steps.check_changes.outputs.changes_detected == 'true'
         run: |
-          echo "Generated Title: ${{ fromJson(steps.analyze.outputs.json).title }}"
-          echo "Generated Body: ${{ fromJson(steps.analyze.outputs.json).body }}"
+          echo "Title: ${{ fromJson(steps.analyze.outputs.json).title }}"
+          echo "Branch: ${{ fromJson(steps.analyze.outputs.json).branch_name }}"
+          echo "Body: ${{ fromJson(steps.analyze.outputs.json).body }}"
 
       - name: Create PR
         if: steps.check_changes.outputs.changes_detected == 'true'
@@ -89,7 +92,7 @@ jobs:
           commit-message: ${{ fromJson(steps.analyze.outputs.json).title }}
           title: ${{ fromJson(steps.analyze.outputs.json).title }}
           body: ${{ fromJson(steps.analyze.outputs.json).body }}
-          branch: update-spec
+          branch: ${{ fromJson(steps.analyze.outputs.json).branch_name }}
           delete-branch: true
           base: main
 
