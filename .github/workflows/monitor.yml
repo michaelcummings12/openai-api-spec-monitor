@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   monitor:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -28,7 +28,13 @@ jobs:
       - name: Compute the diff and check for changes
         id: check_changes
         run: |
-          git diff --exit-code cache/openapi.documented.yml || echo "changes_detected=true" >> $GITHUB_OUTPUT
+          git diff --stat cache/openapi.documented.yml
+          if ! git diff --exit-code cache/openapi.documented.yml; then
+            echo "Changes detected!"
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          else
+            echo "No changes detected."
+          fi
 
       - name: Read the diff
         if: steps.check_changes.outputs.changes_detected == 'true'
