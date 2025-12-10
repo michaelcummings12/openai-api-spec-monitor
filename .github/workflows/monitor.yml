@@ -2,7 +2,7 @@ name: OpenAI API Spec Monitor
 
 on:
   schedule:
-    - cron: '0 * * * *' # Run every hour
+    - cron: "0 * * * *" # Run every hour
   workflow_dispatch: # Allow manual trigger
   push:
     branches:
@@ -23,13 +23,13 @@ jobs:
 
       - name: Fetch latest spec
         run: |
-          curl -o cache/openapi.documented.yml https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml
+          curl -f -o cache/openapi.yml https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml
 
       - name: Compute the diff
         id: check_changes
         run: |
-          git diff --stat cache/openapi.documented.yml
-          if ! git diff --exit-code cache/openapi.documented.yml; then
+          git diff --stat cache/openapi.yml
+          if ! git diff --exit-code cache/openapi.yml; then
             echo "Changes detected!"
             echo "changes_detected=true" >> $GITHUB_OUTPUT
           else
@@ -41,8 +41,7 @@ jobs:
         id: read_diff
         run: |
           # Read the diff into a variable. Limit to 10000 chars.
-          DIFF_CONTENT=$(git diff cache/openapi.documented.yml | head -c 10000)
-          
+          DIFF_CONTENT=$(git diff cache/openapi.yml | head -c 10000)
           echo "diff<<EOF" >> $GITHUB_OUTPUT
           echo "$DIFF_CONTENT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -75,7 +74,7 @@ jobs:
             Diff:
             ${{ steps.read_diff.outputs.diff }}
 
-      - name: Debug analysis result
+      - name: Log analysis result
         if: steps.check_changes.outputs.changes_detected == 'true'
         run: |
           echo "Branch: ${{ fromJson(steps.analyze.outputs.json).branch_name }}"
