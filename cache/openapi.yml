@@ -41174,6 +41174,9 @@ components:
         - $ref: '#/components/schemas/EvalItemContentOutputText'
         - $ref: '#/components/schemas/EvalItemInputImage'
         - $ref: '#/components/schemas/InputAudio'
+      x-stainless-naming:
+        ruby:
+          model_name: GraderInputItem
     EvalItemContentOutputText:
       type: object
       title: Output text
