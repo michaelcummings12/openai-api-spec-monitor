@@ -58,7 +58,7 @@ jobs:
               "$schema": "https://json-schema.org/draft/2020-12/schema",
               "type": "object",
               "properties": {
-                "branch_name": { "type": "string", "description": "Branch name in the format type/short-description (e.g. feat/added-specification)" },
+                "branch_name": { "type": "string", "description": "Branch name in the format type/short-description using either 'feat' or 'chore'" },
                 "body": { "type": "string", "description": "Detailed description of changes in markdown" }
               },
               "required": ["branch_name", "body"],
@@ -67,8 +67,8 @@ jobs:
           prompt: |
             You are a senior software engineer and an expert in API specifications.
             Analyze the following git diff for an OpenAI API spec file.
-            Determine the type of change (feat, fix, chore, docs, breaking).
-            Generate a branch name in the format `type/short-description` (e.g., `feat/new-embeddings-model`).
+            Determine the type of change. Use 'feat' for actual to the API specification (endpoints, schemas, parameters), and 'chore' for anything else (updates to examples, docs, formatting, etc).
+            Generate a branch name in the format `type/short-description` (e.g., `feat/new-embeddings-model` or `chore/typo-fix`).
             And generate a detailed description of the changes in markdown for a GitHub pull request.
               
             Diff:
@@ -98,3 +98,16 @@ jobs:
         run: gh pr merge --squash --auto "${{ steps.cpr.outputs.pull-request-number }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Discord Notification
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          args: |
+            ✨ OpenAI API spec updated
+
+            **${{ fromJson(steps.analyze.outputs.json).branch_name }}**
+
+            PR: ${{ steps.cpr.outputs.pull-request-url }}
