@@ -2,6 +2,10 @@
 
 A GitHub Action that monitors the [OpenAI API Specification](https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml) for changes. When a change is detected, the diff is analyzed using AI and a PR is created. The PR is automatically merged.
 
+## Community
+
+Join our [Discord Server](https://discord.gg/CcbtSc25) to stay updated! The bot sends notifications to the [#openai-ai-spec-monitor](https://discord.com/channels/1463555674431684630/1463557477122703424) channel.
+
 ## How It Works
 
 1.  Downloads the latest [OpenAI spec](https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml).
@@ -36,10 +40,6 @@ A GitHub Action that monitors the [OpenAI API Specification](https://app.stainle
     - Select "Read and write permissions".
     - Check "Allow GitHub Actions to create and approve pull requests".
 
-## Community
-
-Join our [Discord Server](https://discord.gg/CcbtSc25) to stay updated! The bot sends notifications to the [#openai-ai-spec-monitor](https://discord.com/channels/1463555674431684630/1463557477122703424) channel.
-
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) for details.
