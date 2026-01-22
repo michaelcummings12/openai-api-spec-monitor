@@ -12,7 +12,6 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  issues: write
 
 jobs:
   monitor:
@@ -100,13 +99,13 @@ jobs:
           delete-branch: true
           base: main
 
-      - name: Enable auto-merge
+      - name: Merge PR
         if: steps.cpr.outputs.pull-request-operation == 'created'
         run: gh pr merge --admin --squash "${{ steps.cpr.outputs.pull-request-number }}"
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
 
-      - name: Discord Notification
+      - name: Send Discord notification
         if: steps.cpr.outputs.pull-request-operation == 'created'
         uses: Ilshidur/action-discord@master
         env:

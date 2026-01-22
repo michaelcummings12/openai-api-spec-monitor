@@ -30,28 +30,31 @@ Join our [Discord Server](https://discord.gg/CcbtSc25) to stay updated! The bot 
 ### Installation
 
 1.  Clone/Fork this repository.
-2.  Configure Secrets:
-    - Go to `Settings` > `Secrets and variables` > `Actions`.
-    - Add a new repository secret named `DISCORD_WEBHOOK_URL` with your Discord webhook URL.
-    - Add a new repository secret named `AI_GATEWAY_API_KEY` with your Vercel AI Gateway API key.
-    - Add a new repository secret named `GH_APP_ID` with your GitHub App ID.
-    - Add a new repository secret named `GH_APP_PRIVATE_KEY` with the content of the `.pem` file you downloaded.
 
-### Creating the GitHub App
+2.  **Create the GitHub App:**
 
-> A GitHub App is required to bypass branch protection rules (e.g., mandatory reviews) and auto-merge PRs.
+    > A GitHub App is required to bypass branch protection rules (e.g., mandatory reviews) and auto-merge PRs.
+    - Go to [Developer Settings](https://github.com/settings/apps) and click **New GitHub App**.
+    - Set the name (e.g., `OpenAI API Spec Monitor`) and homepage URL (this repo).
+    - Uncheck "Active" under **Webhook**.
+    - **Permissions**:
+      - Repository permissions > **Contents**: Read and Write
+      - Repository permissions > **Pull requests**: Read and Write
+    - Create the App.
+    - Note the **App ID** (you will need this for the secrets).
+    - Generate a **Private Key** and download the `.pem` file (you will need the content of this file).
+    - **Install the App**: Click **Install App** on the left menu -> Select your account -> Select this repository.
 
-1.  Go to [Developer Settings](https://github.com/settings/apps) and click **New GitHub App**.
-2.  Set the name (e.g., `OpenAI API Spec Monitor Bot`) and homepage URL.
-3.  Uncheck "Active" under **Webhook**.
-4.  **Permissions**:
-    - Repository permissions > **Contents**: Read and Write
-    - Repository permissions> **Pull requests**: Read and Write
-5.  Create the App.
-6.  Note the **App ID** (use for `GH_APP_ID`).
-7.  Generate a **Private Key** and download the `.pem` file (use content for `GH_APP_PRIVATE_KEY`).
-8.  Install the App on your repository: **Install App** -> Select your account -> Select this repository.
-9.  Permissions:
+3.  **Configure Secrets:**
+    - Go to your repository `Settings` > `Secrets and variables` > `Actions`.
+    - Add the following repository secrets:
+      - `GH_APP_ID`: The **App ID** you noted from the GitHub App.
+      - `GH_APP_PRIVATE_KEY`: The content of the `.pem` file you downloaded.
+      - `AI_GATEWAY_API_KEY`: Your Vercel AI Gateway API key.
+      - `DISCORD_WEBHOOK_URL`: Your Discord Webhook URL.
+        - _To get this:_ Go to Discord Server settings > **Integrations** > **Webhooks** > **New Webhook**, select channel, copy URL.
+
+4.  **Workflow Permissions:**
     - Go to `Settings` > `Actions` > `General` > `Workflow permissions`.
     - Select "Read and write permissions".
 
