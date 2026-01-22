@@ -34,11 +34,26 @@ Join our [Discord Server](https://discord.gg/CcbtSc25) to stay updated! The bot 
     - Go to `Settings` > `Secrets and variables` > `Actions`.
     - Add a new repository secret named `DISCORD_WEBHOOK_URL` with your Discord webhook URL.
     - Add a new repository secret named `AI_GATEWAY_API_KEY` with your Vercel AI Gateway API key.
-3.  Permissions:
-    - Ensure your GitHub Action has Read and Write permissions.
+    - Add a new repository secret named `GH_APP_ID` with your GitHub App ID.
+    - Add a new repository secret named `GH_APP_PRIVATE_KEY` with the content of the `.pem` file you downloaded.
+
+### Creating the GitHub App
+
+> A GitHub App is required to bypass branch protection rules (e.g., mandatory reviews) and auto-merge PRs.
+
+1.  Go to [Developer Settings](https://github.com/settings/apps) and click **New GitHub App**.
+2.  Set the name (e.g., `OpenAI API Spec Monitor Bot`) and homepage URL.
+3.  Uncheck "Active" under **Webhook**.
+4.  **Permissions**:
+    - Repository permissions > **Contents**: Read and Write
+    - Repository permissions> **Pull requests**: Read and Write
+5.  Create the App.
+6.  Note the **App ID** (use for `GH_APP_ID`).
+7.  Generate a **Private Key** and download the `.pem` file (use content for `GH_APP_PRIVATE_KEY`).
+8.  Install the App on your repository: **Install App** -> Select your account -> Select this repository.
+9.  Permissions:
     - Go to `Settings` > `Actions` > `General` > `Workflow permissions`.
     - Select "Read and write permissions".
-    - Check "Allow GitHub Actions to create and approve pull requests".
 
 ## License
 
