@@ -12,7 +12,6 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  issues: write
 
 jobs:
   monitor:
@@ -80,19 +79,12 @@ jobs:
           echo "Branch: ${{ fromJson(steps.analyze.outputs.json).branch_name }}"
           echo "Body: ${{ fromJson(steps.analyze.outputs.json).body }}"
 
-      - name: Generate GitHub App Token
-        uses: actions/create-github-app-token@v1
-        id: app-token
-        with:
-          app-id: ${{ secrets.GH_APP_ID }}
-          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-
       - name: Create PR
         if: steps.check_changes.outputs.changes_detected == 'true'
         uses: peter-evans/create-pull-request@v7
         id: cpr
         with:
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: ${{ fromJson(steps.analyze.outputs.json).branch_name }}
           title: ${{ fromJson(steps.analyze.outputs.json).branch_name }}
           body: ${{ fromJson(steps.analyze.outputs.json).body }}
@@ -100,13 +92,13 @@ jobs:
           delete-branch: true
           base: main
 
-      - name: Enable auto-merge
+      - name: Merge PR
         if: steps.cpr.outputs.pull-request-operation == 'created'
-        run: gh pr merge --admin --squash "${{ steps.cpr.outputs.pull-request-number }}"
+        run: gh pr merge --admin --squash  "${{ steps.cpr.outputs.pull-request-number }}"
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Discord Notification
+      - name: Send Discord notification
         if: steps.cpr.outputs.pull-request-operation == 'created'
         uses: Ilshidur/action-discord@master
         env:
