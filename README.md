@@ -4,15 +4,14 @@ A GitHub Action that monitors the [OpenAI API Specification](https://app.stainle
 
 ## Community
 
-Join our [Discord Server](https://discord.gg/CcbtSc25) to stay updated! The bot sends notifications to the [#openai-ai-spec-monitor](https://discord.com/channels/1463555674431684630/1463557477122703424) channel.
+Join our [Discord Server](https://discord.gg/CcbtSc25) to stay updated! The bot sends notifications to the [#openai-api-spec-monitor](https://discord.com/channels/1463555674431684630/1463557477122703424) channel.
 
 ## How It Works
 
 1.  Downloads the latest [OpenAI spec](https://app.stainless.com/api/spec/documented/openai/openapi.documented.yml).
 2.  Compares the downloaded spec with the spec cached in the repository.
 3.  If changes are detected, a summary is generated with AI based on the diff.
-4.  A new PR is created using the generated summary.
-5.  The PR is automatically merged.
+4.  A PR is created, using the generated summary, and automatically merged.
 
 ## Features
 
