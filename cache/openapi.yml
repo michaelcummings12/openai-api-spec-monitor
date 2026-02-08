@@ -12852,12 +12852,58 @@ paths:
       tags:
         - Images
       summary: Creates an edited or extended image given one or more source images and a prompt. This endpoint supports GPT Image models (`gpt-image-1.5`, `gpt-image-1`, and `gpt-image-1-mini`) and `dall-e-2`.
+      description: >
+        You can call this endpoint with either:
+
+
+        - `multipart/form-data`: use binary uploads via `image` (and optional
+        `mask`).
+
+        - `application/json`: use `images` (and optional `mask`) as references
+        with either `image_url` or `file_id`.
+
+
+        Note that JSON requests use `images` (array) instead of the multipart
+        `image` field.
       requestBody:
         required: true
         content:
           multipart/form-data:
             schema:
               $ref: "#/components/schemas/CreateImageEditRequest"
+            examples:
+              multipart_edit:
+                summary: Multipart form upload (binary image + prompt)
+                value:
+                  model: gpt-image-1
+                  prompt: Add a watercolor effect to this image
+                  image: <binary image file>
+                  size: 1024x1024
+                  quality: high
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EditImageBodyJsonParam"
+            examples:
+              json_with_url:
+                summary: JSON request with image URL
+                value:
+                  model: gpt-image-1
+                  prompt: Add a watercolor effect to this image
+                  images:
+                    - image_url: https://example.com/source-image.png
+                  size: 1024x1024
+                  quality: high
+              json_with_file_id:
+                summary: JSON request with uploaded file id
+                value:
+                  model: gpt-image-1.5
+                  prompt: Replace the background with a snowy mountain scene
+                  images:
+                    - file_id: file-abc123
+                  mask:
+                    file_id: file-mask123
+                  output_format: png
+                  output_compression: 100
       responses:
         "200":
           description: OK
@@ -38762,6 +38808,15 @@ components:
               anyOf:
                 - $ref: "#/components/schemas/ConversationParam"
                 - type: "null"
+            context_management:
+              anyOf:
+                - type: array
+                  description: |
+                    Context management configuration for this request.
+                  minItems: 1
+                  items:
+                    $ref: "#/components/schemas/ContextManagementParam"
+                - type: "null"
     CreateRunRequest:
       type: object
       additionalProperties: false
@@ -40210,6 +40265,157 @@ components:
       required:
         - role
         - content
+    EditImageBodyJsonParam:
+      type: object
+      description: >
+        JSON request body for image edits.
+
+
+        Use `images` (array of `ImageRefParam`) instead of multipart `image`
+        uploads.
+
+        You can reference images via external URLs, data URLs, or uploaded file
+        IDs.
+      properties:
+        model:
+          anyOf:
+            - type: string
+            - type: string
+              enum:
+                - gpt-image-1.5
+                - gpt-image-1
+                - gpt-image-1-mini
+                - dall-e-2
+            - type: "null"
+          x-oaiTypeLabel: string
+          default: gpt-image-1.5
+          example: gpt-image-1.5
+          description: The model to use for image editing.
+        images:
+          type: array
+          minItems: 1
+          maxItems: 16
+          description: |
+            Input image references to edit.
+            For GPT image models, you can provide up to 16 images.
+          items:
+            $ref: "#/components/schemas/ImageRefParam"
+        mask:
+          $ref: "#/components/schemas/ImageRefParam"
+        prompt:
+          type: string
+          minLength: 1
+          maxLength: 32000
+          example: Add a watercolor effect and keep the subject centered
+          description: A text description of the desired image edit.
+        n:
+          anyOf:
+            - type: integer
+              minimum: 1
+              maximum: 10
+            - type: "null"
+          default: 1
+          example: 1
+          description: The number of edited images to generate.
+        quality:
+          anyOf:
+            - type: string
+              enum:
+                - standard
+                - low
+                - medium
+                - high
+                - auto
+            - type: "null"
+          default: auto
+          example: high
+          description: >
+            Output quality. `high`, `medium`, and `low` are only supported for
+            GPT image models.
+
+            `dall-e-2` supports `standard`.
+        input_fidelity:
+          anyOf:
+            - type: string
+              enum:
+                - high
+                - low
+            - type: "null"
+          description: Controls fidelity to the original input image(s).
+        size:
+          anyOf:
+            - type: string
+              enum:
+                - auto
+                - 256x256
+                - 512x512
+                - 1024x1024
+                - 1536x1024
+                - 1024x1536
+            - type: "null"
+          default: auto
+          example: 1024x1024
+          description: Requested output image size.
+        user:
+          type: string
+          example: user-1234
+          description: >
+            A unique identifier representing your end-user, which can help
+            OpenAI
+
+            monitor and detect abuse.
+        output_format:
+          anyOf:
+            - type: string
+              enum:
+                - png
+                - jpeg
+                - webp
+            - type: "null"
+          default: png
+          example: png
+          description: Output image format. Supported for GPT image models.
+        output_compression:
+          anyOf:
+            - type: integer
+              minimum: 0
+              maximum: 100
+            - type: "null"
+          example: 100
+          description: Compression level for `jpeg` or `webp` output.
+        moderation:
+          anyOf:
+            - type: string
+              enum:
+                - low
+                - auto
+            - type: "null"
+          default: auto
+          example: auto
+          description: Moderation level for GPT image models.
+        background:
+          anyOf:
+            - type: string
+              enum:
+                - transparent
+                - opaque
+                - auto
+            - type: "null"
+          default: auto
+          example: transparent
+          description: Background behavior for generated image output.
+        stream:
+          anyOf:
+            - type: boolean
+            - type: "null"
+          default: false
+          example: false
+          description: Stream partial image results as events.
+        partial_images:
+          $ref: "#/components/schemas/PartialImages"
+      required:
+        - images
+        - prompt
     Embedding:
       type: object
       description: |
@@ -44102,6 +44308,31 @@ components:
         - id
         - status
         - result
+    ImageRefParam:
+      type: object
+      description: |
+        Reference an input image by either URL or uploaded file ID.
+        Provide exactly one of `image_url` or `file_id`.
+      properties:
+        image_url:
+          type: string
+          maxLength: 20971520
+          description: A fully qualified URL or base64-encoded data URL.
+          example: https://example.com/source-image.png
+        file_id:
+          type: string
+          description: The File API ID of an uploaded image to use as input.
+          example: file-abc123
+      anyOf:
+        - required:
+            - image_url
+        - required:
+            - file_id
+      not:
+        required:
+          - image_url
+          - file_id
+      additionalProperties: false
     ImagesResponse:
       type: object
       title: Image generation response
@@ -64347,7 +64578,7 @@ components:
           }
     WebSearchActionFind:
       type: object
-      title: Find in page action
+      title: Find action
       description: |
         Action type "find_in_page": Searches for a pattern within a loaded page.
       properties:
@@ -67337,7 +67568,7 @@ components:
       enum:
         - high
         - low
-      description: Control how much effort the model will exert to match the style and features, especially facial features, of input images. This parameter is only supported for `gpt-image-1`. Unsupported for `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+      description: Control how much effort the model will exert to match the style and features, especially facial features, of input images. This parameter is only supported for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
     ImageGenActionEnum:
       type: string
       enum:
@@ -67604,6 +67835,20 @@ components:
         - id
       title: Conversation object
       description: The conversation that this response belongs to.
+    ContextManagementParam:
+      properties:
+        type:
+          type: string
+          description: The context management entry type. Currently only 'compaction' is supported.
+        compact_threshold:
+          anyOf:
+            - type: integer
+              minimum: 1000
+              description: Token threshold at which compaction should be triggered for this entry.
+            - type: "null"
+      type: object
+      required:
+        - type
     CompactionBody:
       properties:
         type:
