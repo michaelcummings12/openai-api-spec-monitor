@@ -72186,6 +72186,63 @@ x-oaiMeta:
         - type: object
           key: ResponseErrorEvent
           path: <auto>
+    - id: webhook-events
+      title: Webhook Events
+      description: >
+        Webhooks are HTTP requests sent by OpenAI to a URL you specify when
+        certain
+
+        events happen during the course of API usage.
+
+
+        [Learn more about webhooks](/docs/guides/webhooks).
+      navigationGroup: webhooks
+      sections:
+        - type: object
+          key: WebhookResponseCompleted
+          path: <auto>
+        - type: object
+          key: WebhookResponseCancelled
+          path: <auto>
+        - type: object
+          key: WebhookResponseFailed
+          path: <auto>
+        - type: object
+          key: WebhookResponseIncomplete
+          path: <auto>
+        - type: object
+          key: WebhookBatchCompleted
+          path: <auto>
+        - type: object
+          key: WebhookBatchCancelled
+          path: <auto>
+        - type: object
+          key: WebhookBatchExpired
+          path: <auto>
+        - type: object
+          key: WebhookBatchFailed
+          path: <auto>
+        - type: object
+          key: WebhookFineTuningJobSucceeded
+          path: <auto>
+        - type: object
+          key: WebhookFineTuningJobFailed
+          path: <auto>
+        - type: object
+          key: WebhookFineTuningJobCancelled
+          path: <auto>
+        - type: object
+          key: WebhookEvalRunSucceeded
+          path: <auto>
+        - type: object
+          key: WebhookEvalRunFailed
+          path: <auto>
+        - type: object
+          key: WebhookEvalRunCanceled
+          path: <auto>
+        - type: object
+          key: WebhookRealtimeCallIncoming
+          path: <auto>
     - id: images-streaming
       title: Image Streaming
       description: >
