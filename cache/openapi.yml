@@ -1121,11 +1121,11 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                transcription = client.audio.transcriptions.create(
+                for transcription in client.audio.transcriptions.create(
                     file=b"raw file contents",
                     model="gpt-4o-transcribe",
-                )
-                print(transcription)
+                ):
+                  print(transcription)
               javascript: |
                 import fs from "fs";
                 import OpenAI from "openai";
@@ -1252,11 +1252,11 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                transcription = client.audio.transcriptions.create(
+                for transcription in client.audio.transcriptions.create(
                     file=b"raw file contents",
                     model="gpt-4o-transcribe",
-                )
-                print(transcription)
+                ):
+                  print(transcription)
               javascript: >
                 import fs from "fs";
 
@@ -1393,11 +1393,11 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                transcription = client.audio.transcriptions.create(
+                for transcription in client.audio.transcriptions.create(
                     file=b"raw file contents",
                     model="gpt-4o-transcribe",
-                )
-                print(transcription)
+                ):
+                  print(transcription)
               javascript: |
                 import fs from "fs";
                 import OpenAI from "openai";
@@ -1667,11 +1667,11 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                transcription = client.audio.transcriptions.create(
+                for transcription in client.audio.transcriptions.create(
                     file=b"raw file contents",
                     model="gpt-4o-transcribe",
-                )
-                print(transcription)
+                ):
+                  print(transcription)
               javascript: |
                 import fs from "fs";
                 import OpenAI from "openai";
@@ -1820,11 +1820,11 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                transcription = client.audio.transcriptions.create(
+                for transcription in client.audio.transcriptions.create(
                     file=b"raw file contents",
                     model="gpt-4o-transcribe",
-                )
-                print(transcription)
+                ):
+                  print(transcription)
               javascript: |
                 import fs from "fs";
                 import OpenAI from "openai";
@@ -1970,11 +1970,11 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                transcription = client.audio.transcriptions.create(
+                for transcription in client.audio.transcriptions.create(
                     file=b"raw file contents",
                     model="gpt-4o-transcribe",
-                )
-                print(transcription)
+                ):
+                  print(transcription)
               javascript: |
                 import fs from "fs";
                 import OpenAI from "openai";
@@ -3331,14 +3331,14 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                chat_completion = client.chat.completions.create(
+                for completion in client.chat.completions.create(
                     messages=[{
                         "content": "string",
                         "role": "developer",
                     }],
                     model="gpt-4o",
-                )
-                print(chat_completion)
+                ):
+                  print(completion)
               javascript: |
                 import OpenAI from "openai";
 
@@ -3500,14 +3500,14 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                chat_completion = client.chat.completions.create(
+                for completion in client.chat.completions.create(
                     messages=[{
                         "content": "string",
                         "role": "developer",
                     }],
                     model="gpt-4o",
-                )
-                print(chat_completion)
+                ):
+                  print(completion)
               javascript: |
                 import OpenAI from "openai";
 
@@ -3675,14 +3675,14 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                chat_completion = client.chat.completions.create(
+                for completion in client.chat.completions.create(
                     messages=[{
                         "content": "string",
                         "role": "developer",
                     }],
                     model="gpt-4o",
-                )
-                print(chat_completion)
+                ):
+                  print(completion)
               javascript: |
                 import OpenAI from "openai";
 
@@ -3862,14 +3862,14 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                chat_completion = client.chat.completions.create(
+                for completion in client.chat.completions.create(
                     messages=[{
                         "content": "string",
                         "role": "developer",
                     }],
                     model="gpt-4o",
-                )
-                print(chat_completion)
+                ):
+                  print(completion)
               javascript: |
                 import OpenAI from "openai";
 
@@ -4083,14 +4083,14 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                chat_completion = client.chat.completions.create(
+                for completion in client.chat.completions.create(
                     messages=[{
                         "content": "string",
                         "role": "developer",
                     }],
                     model="gpt-4o",
-                )
-                print(chat_completion)
+                ):
+                  print(completion)
               javascript: |
                 import OpenAI from "openai";
 
@@ -4965,11 +4965,11 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                completion = client.completions.create(
+                for completion in client.completions.create(
                     model="string",
                     prompt="This is a test.",
-                )
-                print(completion)
+                ):
+                  print(completion)
               javascript: |-
                 import OpenAI from "openai";
 
@@ -5075,11 +5075,11 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                completion = client.completions.create(
+                for completion in client.completions.create(
                     model="string",
                     prompt="This is a test.",
-                )
-                print(completion)
+                ):
+                  print(completion)
               javascript: |-
                 import OpenAI from "openai";
 
@@ -12626,11 +12626,11 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                images_response = client.images.edit(
+                for image in client.images.edit(
                     image=b"raw file contents",
                     prompt="A cute baby sea otter wearing a beret",
-                )
-                print(images_response)
+                ):
+                  print(image)
               javascript: |
                 import fs from "fs";
                 import OpenAI, { toFile } from "openai";
@@ -12730,11 +12730,11 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                images_response = client.images.edit(
+                for image in client.images.edit(
                     image=b"raw file contents",
                     prompt="A cute baby sea otter wearing a beret",
-                )
-                print(images_response)
+                ):
+                  print(image)
               javascript: |
                 import fs from "fs";
                 import OpenAI, { toFile } from "openai";
@@ -12872,10 +12872,10 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                images_response = client.images.generate(
+                for image in client.images.generate(
                     prompt="A cute baby sea otter",
-                )
-                print(images_response)
+                ):
+                  print(image)
               javascript: |
                 import OpenAI from "openai";
                 import { writeFile } from "fs/promises";
@@ -12977,10 +12977,10 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                images_response = client.images.generate(
+                for image in client.images.generate(
                     prompt="A cute baby sea otter",
-                )
-                print(images_response)
+                ):
+                  print(image)
               javascript: |
                 import OpenAI from "openai";
 
@@ -20296,8 +20296,8 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                response = client.responses.create()
-                print(response.id)
+                for response in client.responses.create():
+                  print(response)
               csharp: >
                 using System;
 
@@ -20460,8 +20460,8 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                response = client.responses.create()
-                print(response.id)
+                for response in client.responses.create():
+                  print(response)
               csharp: |
                 using System;
                 using System.Collections.Generic;
@@ -20630,8 +20630,8 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                response = client.responses.create()
-                print(response.id)
+                for response in client.responses.create():
+                  print(response)
               node.js: |-
                 import OpenAI from 'openai';
 
@@ -20761,8 +20761,8 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                response = client.responses.create()
-                print(response.id)
+                for response in client.responses.create():
+                  print(response)
               csharp: >
                 using System;
 
@@ -20967,8 +20967,8 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                response = client.responses.create()
-                print(response.id)
+                for response in client.responses.create():
+                  print(response)
               csharp: >
                 using System;
 
@@ -21188,8 +21188,8 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                response = client.responses.create()
-                print(response.id)
+                for response in client.responses.create():
+                  print(response)
               javascript: |
                 import OpenAI from "openai";
 
@@ -21387,8 +21387,8 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                response = client.responses.create()
-                print(response.id)
+                for response in client.responses.create():
+                  print(response)
               javascript: |
                 import OpenAI from "openai";
 
@@ -21617,8 +21617,8 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                response = client.responses.create()
-                print(response.id)
+                for response in client.responses.create():
+                  print(response)
               csharp: >
                 using System;
 
@@ -21838,10 +21838,10 @@ paths:
               client = OpenAI(
                   api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
               )
-              response = client.responses.retrieve(
+              for response in client.responses.retrieve(
                   response_id="resp_677efb5139a88190b512bc3fef8e535d",
-              )
-              print(response.id)
+              ):
+                print(response)
             node.js: >-
               import OpenAI from 'openai';
 
@@ -22570,10 +22570,10 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                run = client.beta.threads.create_and_run(
+                for thread in client.beta.threads.create_and_run(
                     assistant_id="assistant_id",
-                )
-                print(run.id)
+                ):
+                  print(thread)
               javascript: |
                 import OpenAI from "openai";
 
@@ -22697,10 +22697,10 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                run = client.beta.threads.create_and_run(
+                for thread in client.beta.threads.create_and_run(
                     assistant_id="assistant_id",
-                )
-                print(run.id)
+                ):
+                  print(thread)
               javascript: |
                 import OpenAI from "openai";
 
@@ -22910,10 +22910,10 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                run = client.beta.threads.create_and_run(
+                for thread in client.beta.threads.create_and_run(
                     assistant_id="assistant_id",
-                )
-                print(run.id)
+                ):
+                  print(thread)
               javascript: |
                 import OpenAI from "openai";
 
@@ -24498,11 +24498,11 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                run = client.beta.threads.runs.create(
+                for run in client.beta.threads.runs.create(
                     thread_id="thread_id",
                     assistant_id="assistant_id",
-                )
-                print(run.id)
+                ):
+                  print(run)
               javascript: |
                 import OpenAI from "openai";
 
@@ -24620,11 +24620,11 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                run = client.beta.threads.runs.create(
+                for run in client.beta.threads.runs.create(
                     thread_id="thread_id",
                     assistant_id="assistant_id",
-                )
-                print(run.id)
+                ):
+                  print(run)
               javascript: |
                 import OpenAI from "openai";
 
@@ -24818,11 +24818,11 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                run = client.beta.threads.runs.create(
+                for run in client.beta.threads.runs.create(
                     thread_id="thread_id",
                     assistant_id="assistant_id",
-                )
-                print(run.id)
+                ):
+                  print(run)
               javascript: |
                 import OpenAI from "openai";
 
@@ -25927,12 +25927,12 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                run = client.beta.threads.runs.submit_tool_outputs(
+                for run in client.beta.threads.runs.submit_tool_outputs(
                     run_id="run_id",
                     thread_id="thread_id",
                     tool_outputs=[{}],
-                )
-                print(run.id)
+                ):
+                  print(run)
               javascript: |
                 import OpenAI from "openai";
 
@@ -26092,12 +26092,12 @@ paths:
                 client = OpenAI(
                     api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
                 )
-                run = client.beta.threads.runs.submit_tool_outputs(
+                for run in client.beta.threads.runs.submit_tool_outputs(
                     run_id="run_id",
                     thread_id="thread_id",
                     tool_outputs=[{}],
-                )
-                print(run.id)
+                ):
+                  print(run)
               javascript: |
                 import OpenAI from "openai";
 
