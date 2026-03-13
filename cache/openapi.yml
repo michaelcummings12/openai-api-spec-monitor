@@ -29856,17 +29856,18 @@ paths:
         examples:
           response: ''
           request:
-            node.js: |-
+            node.js: >-
               import OpenAI from 'openai';
+
 
               const client = new OpenAI({
                 apiKey: process.env['OPENAI_API_KEY'], // This is the default and can be omitted
               });
 
-              const video = await client.videos.edit({
-                prompt: 'x',
-                video: { id: 'video_123' },
-              });
+
+              const video = await client.videos.edit({ prompt: 'x', video:
+              fs.createReadStream('path/to/file') });
+
 
               console.log(video.id);
             python: |-
@@ -29878,12 +29879,10 @@ paths:
               )
               video = client.videos.edit(
                   prompt="x",
-                  video={
-                      "id": "video_123"
-                  },
+                  video=b"Example data",
               )
               print(video.id)
-            go: "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\tvideo, err := client.Videos.Edit(context.TODO(), openai.VideoEditParams{\n\t\tPrompt: \"x\",\n\t\tVideo: openai.VideoEditParamsVideo{\n\t\t\tID: \"video_123\",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", video.ID)\n}\n"
+            go: "package main\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"fmt\"\n\t\"io\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\tvideo, err := client.Videos.Edit(context.TODO(), openai.VideoEditParams{\n\t\tPrompt: \"x\",\n\t\tVideo: openai.VideoEditParamsVideoUnion{\n\t\t\tOfFile: io.Reader(bytes.NewBuffer([]byte(\"Example data\"))),\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", video.ID)\n}\n"
             java: |-
               package com.openai.example;
 
@@ -29891,6 +29890,8 @@ paths:
               import com.openai.client.okhttp.OpenAIOkHttpClient;
               import com.openai.models.videos.Video;
               import com.openai.models.videos.VideoEditParams;
+              import java.io.ByteArrayInputStream;
+              import java.io.InputStream;
 
               public final class Main {
                   private Main() {}
@@ -29900,19 +29901,21 @@ paths:
 
                       VideoEditParams params = VideoEditParams.builder()
                           .prompt("x")
-                          .video(VideoEditParams.Video.builder()
-                              .id("video_123")
-                              .build())
+                          .video(ByteArrayInputStream("Example data".getBytes()))
                           .build();
                       Video video = client.videos().edit(params);
                   }
               }
-            ruby: |-
+            ruby: >-
               require "openai"
+
 
               openai = OpenAI::Client.new(api_key: "My API Key")
 
-              video = openai.videos.edit(prompt: "x", video: {id: "video_123"})
+
+              video = openai.videos.edit(prompt: "x", video:
+              StringIO.new("Example data"))
+
 
               puts(video)
   /videos/extensions:
@@ -29970,7 +29973,7 @@ paths:
                   },
               )
               print(video.id)
-            go: "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\tvideo, err := client.Videos.Extend(context.TODO(), openai.VideoExtendParams{\n\t\tPrompt:  \"x\",\n\t\tSeconds: openai.VideoSeconds4,\n\t\tVideo: openai.VideoExtendParamsVideo{\n\t\t\tID: \"video_123\",\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", video.ID)\n}\n"
+            go: "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\tvideo, err := client.Videos.Extend(context.TODO(), openai.VideoExtendParams{\n\t\tPrompt:  \"x\",\n\t\tSeconds: openai.VideoSeconds4,\n\t\tVideo: openai.VideoExtendParamsVideoUnion{\n\t\t\tOfVideoExtendsVideoVideoReferenceInputParam: &openai.VideoExtendParamsVideoVideoReferenceInputParam{\n\t\t\t\tID: \"video_123\",\n\t\t\t},\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", video.ID)\n}\n"
             java: |-
               package com.openai.example;
 
@@ -29989,7 +29992,7 @@ paths:
                       VideoExtendParams params = VideoExtendParams.builder()
                           .prompt("x")
                           .seconds(VideoSeconds._4)
-                          .video(VideoExtendParams.Video.builder()
+                          .video(VideoExtendParams.Video.VideoReferenceInputParam.builder()
                               .id("video_123")
                               .build())
                           .build();
