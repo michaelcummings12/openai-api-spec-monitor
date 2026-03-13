@@ -892,7 +892,7 @@ paths:
                 speech = client.audio.speech.create(
                     input="input",
                     model="string",
-                    voice="ash",
+                    voice="string",
                 )
                 print(speech)
                 content = speech.read()
@@ -945,14 +945,14 @@ paths:
                 const speech = await client.audio.speech.create({
                   input: 'input',
                   model: 'string',
-                  voice: 'ash',
+                  voice: 'string',
                 });
 
                 console.log(speech);
 
                 const content = await speech.blob();
                 console.log(content);
-              go: "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\tspeech, err := client.Audio.Speech.New(context.TODO(), openai.AudioSpeechNewParams{\n\t\tInput: \"input\",\n\t\tModel: openai.SpeechModelTTS1,\n\t\tVoice: openai.AudioSpeechNewParamsVoiceAsh,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", speech)\n}\n"
+              go: "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\tspeech, err := client.Audio.Speech.New(context.TODO(), openai.AudioSpeechNewParams{\n\t\tInput: \"input\",\n\t\tModel: openai.SpeechModelTTS1,\n\t\tVoice: openai.AudioSpeechNewParamsVoiceUnion{\n\t\t\tOfString: openai.String(\"string\"),\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", speech)\n}\n"
               java: |-
                 package com.openai.example;
 
@@ -971,7 +971,7 @@ paths:
                         SpeechCreateParams params = SpeechCreateParams.builder()
                             .input("input")
                             .model(SpeechModel.TTS_1)
-                            .voice(SpeechCreateParams.Voice.ASH)
+                            .voice("string")
                             .build();
                         HttpResponse speech = client.audio().speech().create(params);
                     }
@@ -984,7 +984,7 @@ paths:
 
 
                 speech = openai.audio.speech.create(input: "input", model:
-                :"tts-1", voice: :ash)
+                :"tts-1", voice: "string")
 
 
                 puts(speech)
@@ -1010,7 +1010,7 @@ paths:
                 const speech = await client.audio.speech.create({
                   input: 'input',
                   model: 'string',
-                  voice: 'ash',
+                  voice: 'string',
                 });
 
                 console.log(speech);
@@ -1027,12 +1027,12 @@ paths:
                 speech = client.audio.speech.create(
                     input="input",
                     model="string",
-                    voice="ash",
+                    voice="string",
                 )
                 print(speech)
                 content = speech.read()
                 print(content)
-              go: "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\tspeech, err := client.Audio.Speech.New(context.TODO(), openai.AudioSpeechNewParams{\n\t\tInput: \"input\",\n\t\tModel: openai.SpeechModelTTS1,\n\t\tVoice: openai.AudioSpeechNewParamsVoiceAsh,\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", speech)\n}\n"
+              go: "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\n\t\"github.com/openai/openai-go\"\n\t\"github.com/openai/openai-go/option\"\n)\n\nfunc main() {\n\tclient := openai.NewClient(\n\t\toption.WithAPIKey(\"My API Key\"),\n\t)\n\tspeech, err := client.Audio.Speech.New(context.TODO(), openai.AudioSpeechNewParams{\n\t\tInput: \"input\",\n\t\tModel: openai.SpeechModelTTS1,\n\t\tVoice: openai.AudioSpeechNewParamsVoiceUnion{\n\t\t\tOfString: openai.String(\"string\"),\n\t\t},\n\t})\n\tif err != nil {\n\t\tpanic(err.Error())\n\t}\n\tfmt.Printf(\"%+v\\n\", speech)\n}\n"
               java: |-
                 package com.openai.example;
 
@@ -1051,7 +1051,7 @@ paths:
                         SpeechCreateParams params = SpeechCreateParams.builder()
                             .input("input")
                             .model(SpeechModel.TTS_1)
-                            .voice(SpeechCreateParams.Voice.ASH)
+                            .voice("string")
                             .build();
                         HttpResponse speech = client.audio().speech().create(params);
                     }
@@ -1064,7 +1064,7 @@ paths:
 
 
                 speech = openai.audio.speech.create(input: "input", model:
-                :"tts-1", voice: :ash)
+                :"tts-1", voice: "string")
 
 
                 puts(speech)
@@ -66663,9 +66663,7 @@ components:
       description: |
         A built-in voice name or a custom voice reference.
       anyOf:
-        - allOf:
-            - $ref: '#/components/schemas/VoiceIdsShared'
-          type: string
+        - $ref: '#/components/schemas/VoiceIdsShared'
         - type: object
           description: Custom voice reference.
           additionalProperties: false
