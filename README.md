@@ -15,9 +15,9 @@ Join our [Discord Server](https://discord.gg/CcbtSc25) to stay updated! The bot 
 
 ## Features
 
-- ⏰ Runs hourly to check for spec changes.
+- ⏰ Runs every 30 minutes to check for spec changes.
 - ✨ Creates and merges a PR with an AI-generated summary of changes.
-- 🔔 Sends a notification to a Discord channel.
+- 🔔 Sends a notification to Discord.
 
 ## Setup
 
