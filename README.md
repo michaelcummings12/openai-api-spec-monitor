@@ -4,7 +4,7 @@ A GitHub Action that monitors the [OpenAI API Specification](https://app.stainle
 
 ## Community
 
-Join our [Discord Server](https://discord.gg/CcbtSc25) to stay updated! The bot sends notifications to the [#openai-api-spec-monitor](https://discord.com/channels/1463555674431684630/1463557477122703424) channel.
+Join our [Discord Server](https://discord.gg/ZgP524sT2K) to stay updated! The bot sends notifications to the [#openai-api-spec-monitor](https://discord.com/channels/1463555674431684630/1463557477122703424) channel.
 
 ## How It Works
 
