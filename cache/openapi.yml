@@ -1201,7 +1201,7 @@ paths:
                         OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                         TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(ByteArrayInputStream("Example data".getBytes()))
+                            .file(new ByteArrayInputStream("Example data".getBytes()))
                             .model(AudioModel.GPT_4O_TRANSCRIBE)
                             .build();
                         TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
@@ -1323,7 +1323,7 @@ paths:
                         OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                         TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(ByteArrayInputStream("Example data".getBytes()))
+                            .file(new ByteArrayInputStream("Example data".getBytes()))
                             .model(AudioModel.GPT_4O_TRANSCRIBE)
                             .build();
                         TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
@@ -1453,7 +1453,7 @@ paths:
                         OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                         TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(ByteArrayInputStream("Example data".getBytes()))
+                            .file(new ByteArrayInputStream("Example data".getBytes()))
                             .model(AudioModel.GPT_4O_TRANSCRIBE)
                             .build();
                         TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
@@ -1729,7 +1729,7 @@ paths:
                         OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                         TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(ByteArrayInputStream("Example data".getBytes()))
+                            .file(new ByteArrayInputStream("Example data".getBytes()))
                             .model(AudioModel.GPT_4O_TRANSCRIBE)
                             .build();
                         TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
@@ -1911,7 +1911,7 @@ paths:
                         OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                         TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(ByteArrayInputStream("Example data".getBytes()))
+                            .file(new ByteArrayInputStream("Example data".getBytes()))
                             .model(AudioModel.GPT_4O_TRANSCRIBE)
                             .build();
                         TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
@@ -2061,7 +2061,7 @@ paths:
                         OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                         TranscriptionCreateParams params = TranscriptionCreateParams.builder()
-                            .file(ByteArrayInputStream("Example data".getBytes()))
+                            .file(new ByteArrayInputStream("Example data".getBytes()))
                             .model(AudioModel.GPT_4O_TRANSCRIBE)
                             .build();
                         TranscriptionCreateResponse transcription = client.audio().transcriptions().create(params);
@@ -2227,7 +2227,7 @@ paths:
                       OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                       TranslationCreateParams params = TranslationCreateParams.builder()
-                          .file(ByteArrayInputStream("Example data".getBytes()))
+                          .file(new ByteArrayInputStream("Example data".getBytes()))
                           .model(AudioModel.WHISPER_1)
                           .build();
                       TranslationCreateResponse translation = client.audio().translations().create(params);
@@ -9569,7 +9569,7 @@ paths:
                       OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                       FileCreateParams params = FileCreateParams.builder()
-                          .file(ByteArrayInputStream("Example data".getBytes()))
+                          .file(new ByteArrayInputStream("Example data".getBytes()))
                           .purpose(FilePurpose.ASSISTANTS)
                           .build();
                       FileObject fileObject = client.files().create(params);
@@ -12694,7 +12694,7 @@ paths:
                         OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                         ImageEditParams params = ImageEditParams.builder()
-                            .image(ByteArrayInputStream("Example data".getBytes()))
+                            .image(new ByteArrayInputStream("Example data".getBytes()))
                             .prompt("A cute baby sea otter wearing a beret")
                             .build();
                         ImagesResponse imagesResponse = client.images().edit(params);
@@ -12799,7 +12799,7 @@ paths:
                         OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                         ImageEditParams params = ImageEditParams.builder()
-                            .image(ByteArrayInputStream("Example data".getBytes()))
+                            .image(new ByteArrayInputStream("Example data".getBytes()))
                             .prompt("A cute baby sea otter wearing a beret")
                             .build();
                         ImagesResponse imagesResponse = client.images().edit(params);
@@ -13162,7 +13162,7 @@ paths:
                       OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
                       ImageCreateVariationParams params = ImageCreateVariationParams.builder()
-                          .image(ByteArrayInputStream("Example data".getBytes()))
+                          .image(new ByteArrayInputStream("Example data".getBytes()))
                           .build();
                       ImagesResponse imagesResponse = client.images().createVariation(params);
                   }
@@ -26773,7 +26773,7 @@ paths:
 
                       PartCreateParams params = PartCreateParams.builder()
                           .uploadId("upload_abc123")
-                          .data(ByteArrayInputStream("Example data".getBytes()))
+                          .data(new ByteArrayInputStream("Example data".getBytes()))
                           .build();
                       UploadPart uploadPart = client.uploads().parts().create(params);
                   }
@@ -29740,7 +29740,7 @@ paths:
 
                       VideoCreateCharacterParams params = VideoCreateCharacterParams.builder()
                           .name("x")
-                          .video(ByteArrayInputStream("Example data".getBytes()))
+                          .video(new ByteArrayInputStream("Example data".getBytes()))
                           .build();
                       VideoCreateCharacterResponse response = client.videos().createCharacter(params);
                   }
@@ -29902,7 +29902,7 @@ paths:
 
                       VideoEditParams params = VideoEditParams.builder()
                           .prompt("x")
-                          .video(ByteArrayInputStream("Example data".getBytes()))
+                          .video(new ByteArrayInputStream("Example data".getBytes()))
                           .build();
                       Video video = client.videos().edit(params);
                   }
@@ -29993,7 +29993,7 @@ paths:
                       VideoExtendParams params = VideoExtendParams.builder()
                           .prompt("x")
                           .seconds(VideoSeconds._4)
-                          .video(ByteArrayInputStream("Example data".getBytes()))
+                          .video(new ByteArrayInputStream("Example data".getBytes()))
                           .build();
                       Video video = client.videos().extend(params);
                   }
