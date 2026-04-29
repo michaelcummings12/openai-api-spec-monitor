@@ -14788,11 +14788,19 @@ paths:
             type: array
             items:
               type: string
+        - name: api_key_ids
+          in: query
+          description: Return only costs for these API keys.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
         - name: group_by
           in: query
           description: >-
             Group the costs by the specified fields. Support fields include
-            `project_id`, `line_item` and any combination of them.
+            `project_id`, `line_item`, `api_key_id` and any combination of them.
           required: false
           schema:
             type: array
@@ -14801,6 +14809,7 @@ paths:
               enum:
                 - project_id
                 - line_item
+                - api_key_id
         - name: limit
           in: query
           description: >
@@ -14853,7 +14862,8 @@ paths:
                                     "currency": "usd"
                                 },
                                 "line_item": null,
-                                "project_id": null
+                                "project_id": null,
+                                "api_key_id": null
                             }
                         ]
                     }
@@ -36838,6 +36848,13 @@ components:
             - type: string
               description: >-
                 When `group_by=project_id`, this field provides the project ID
+                of the grouped costs result.
+            - type: 'null'
+        api_key_id:
+          anyOf:
+            - type: string
+              description: >-
+                When `group_by=api_key_id`, this field provides the API Key ID
                 of the grouped costs result.
             - type: 'null'
       required:
