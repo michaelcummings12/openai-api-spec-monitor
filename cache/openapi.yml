@@ -59788,13 +59788,13 @@ components:
                 - queued
                 - incomplete
             created_at:
-              type: integer
+              type: number
               format: unixtime
               description: |
                 Unix timestamp (in seconds) of when this Response was created.
             completed_at:
               anyOf:
-                - type: integer
+                - type: number
                   format: unixtime
                   description: >
                     Unix timestamp (in seconds) of when this Response was
